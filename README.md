@@ -28,3 +28,84 @@ Follow the steps below to run the application locally.
 ```bash
 git clone https://github.com/Nadongo/Web-engineering-27.git
 cd Web-engineering-27
+```
+**2. Install Dependencies**
+``` bash
+bundle install
+```
+**3. Setup Database and Seed Initial Data**
+``` bash
+rails db:create
+rails db:migrate
+rails db:seed
+```
+**4. Start the Server**
+``` bash
+rails s
+```
+Access the application in your browser:
+
+http://localhost:3000/
+
+## Requirement Definition Materials
+**CheckSheet**
+
+https://docs.google.com/spreadsheets/d/1WR8DDF1UHumFsNLEIzvfCpT_e-v11_rg/edit?usp=sharing&ouid=116281988887373864705&rtpof=true&sd=true
+
+**Catalog Design**
+
+https://docs.google.com/spreadsheets/d/1WR8DDF1UHumFsNLEIzvfCpT_e-v11_rg/edit?usp=sharing&ouid=116281988887373864705&rtpof=true&sd=true
+
+**Table Definition**
+
+https://docs.google.com/spreadsheets/d/1WR8DDF1UHumFsNLEIzvfCpT_e-v11_rg/edit?usp=sharing&ouid=116281988887373864705&rtpof=true&sd=true
+
+**WireFrame**
+
+https://drive.google.com/file/d/1s1VN8LwHKuvrg4GbPj28Ysebb5LQ3Pmc/view?usp=sharing
+
+## ER Diagram
+Below is the ER diagram representing the relationships between tables.
+
+[Entity Diagram]
+
+<img width="859" height="721" alt="ER_diagram" src="https://github.com/user-attachments/assets/ca017119-e36d-41d8-8a89-b863d1d7fe6e" />
+
+# Screen Transition Diagram
+Below is the screen transition diagram representing the application flow.
+
+[Screen Transition]
+
+<img width="1232" height="736" alt="Screen_Transition" src="https://github.com/user-attachments/assets/94828769-6171-40cd-b972-d63511ea0776" />
+
+## Application Features
+# 1. User Authentication
+* Sign up, Login, and Logout
+* Guest Login (One-click access for general users)
+* Guest Admin Login (One-click access for evaluation)
+
+# 2. Book Management (My Bookshelf)
+* Upload a new book to the catalog.
+* Edit book details (Title, Author, Category, Description).
+* Delete/Remove a book from the catalog.
+* Mark a lent book as "Returned".
+  
+# 3. Community Borrowing System
+* Browse the public catalog.
+* Click "Request to Borrow" on available books.
+* Public User Profiles displaying "Preferred Meeting Spot" and borrow history.
+* "Report Issue" functionality for unreturned books.
+  
+# 4. Category Management
+* Filter books by category/genre.
+
+# 5. Administrator Screen
+* Secure Admin Dashboard (rails_admin first screen only)
+* User and Role Management
+* Catalog and Category Management
+
+## Notes
+* The administrator screen is implemented using the rails_admin gem and is strictly protected from general user access.
+* As required by the assignment, only the first admin screen is described in the screen transition diagram.
+* All high-priority functions, including basic CRUD operations and authentication, are tested using RSpec (Model and System Specs).
+
