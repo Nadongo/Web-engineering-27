@@ -62,21 +62,22 @@ https://docs.google.com/spreadsheets/d/1WR8DDF1UHumFsNLEIzvfCpT_e-v11_rg/edit?us
 
 **WireFrame**
 
-https://drive.google.com/file/d/1s1VN8LwHKuvrg4GbPj28Ysebb5LQ3Pmc/view?usp=sharing
+https://cacoo.com/diagrams/1eCsGXQAUFUT8OuC/B657D 
 
 ## ER Diagram
 Below is the ER diagram representing the relationships between tables.
 
 [Entity Diagram]
 
-<img width="859" height="721" alt="ER_diagram" src="https://github.com/user-attachments/assets/ca017119-e36d-41d8-8a89-b863d1d7fe6e" />
+<img width="823" height="739" alt="Screenshot 2026-04-17 143637" src="https://github.com/user-attachments/assets/56401d02-2b01-4904-a05f-853cf10e16c3" />
 
 # Screen Transition Diagram
 Below is the screen transition diagram representing the application flow.
 
 [Screen Transition]
 
-<img width="1232" height="736" alt="Screen_Transition" src="https://github.com/user-attachments/assets/94828769-6171-40cd-b972-d63511ea0776" />
+<img width="1151" height="766" alt="Screenshot 2026-04-17 143620" src="https://github.com/user-attachments/assets/631b46bc-47fc-497f-ad24-25160f023df5" />
+
 
 ## Application Features
 # 1. User Authentication
