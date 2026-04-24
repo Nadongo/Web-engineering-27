@@ -10,7 +10,59 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body style="margin: 0; font-family: Arial, sans-serif; background-color: #f4f7f6;">
+    
+    <nav style="background-color: #343a40; padding: 15px;">
+      <div style="max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        
+        <div>
+          <%= link_to "Nairobi Reads", root_path, style: "color: white; font-size: 1.2em; font-weight: bold; text-decoration: none; margin-right: 20px;" %>
+        </div>
+
+        <div style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.95rem;">
+          <% if logged_in? %>
+            
+            <% if current_user.admin? %>
+              <%= link_to "Admin Panel", admin_dashboard_path, style: "color: #ffc107; text-decoration: none; margin-right: 20px; font-weight: bold;" %>
+            <% end %>
+            
+            <%= link_to "Home", books_path, style: "color: white; text-decoration: none; margin-right: 20px;" %>
+            <%= link_to "My Bookshelf", my_bookshelf_path, style: "color: white; text-decoration: none; margin-right: 20px;" %>
+            <%= link_to "Profile", user_path(current_user), style: "color: white; text-decoration: none; margin-right: 20px;" %>
+            <%= button_to "Log Out", logout_path, method: :delete, form: {style: 'display:inline-block; margin:0;'}, style: "color: #dc3545; background: none; border: none; font-weight: bold; cursor: pointer; padding: 0; font-size: 0.95rem;" %>
+          
+          <% else %>
+            <%= link_to "Log In", login_path, style: "color: white; text-decoration: none; margin-right: 20px;" %>
+            <%= link_to "Sign Up", new_user_path, style: "color: #28a745; background-color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-weight: bold;" %>
+          <% end %>
+        </div>
+
+      </div>
+    </nav>
+
+    <div id="flash-container" style="max-width: 900px; margin: 15px auto; text-align: center; position: relative; z-index: 1000;">
+      <% flash.each do |message_type, message| %>
+        <div class="auto-dismiss-alert" style="padding: 15px; border-radius: 6px; border: 1px solid #ccc; background-color: #fff; color: #333; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid <%= message_type == 'error' ? '#dc3545' : (message_type == 'warning' ? '#ffc107' : '#28a745') %>;">
+          <strong><%= message_type == 'error' ? 'Error:' : 'Notification:' %></strong> <%= message %>
+        </div>
+      <% end %>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+          var alerts = document.querySelectorAll('.auto-dismiss-alert');
+          alerts.forEach(function(alert) {
+            alert.style.transition = "opacity 0.6s ease-out";
+            alert.style.opacity = "0";
+            setTimeout(function() { alert.style.display = "none"; }, 600); // Wait for fade to finish before removing
+          });
+        }, 5000); // 5000 milliseconds = 5 seconds
+      });
+    </script>
+
+    <div style="padding: 20px;">
+      <%= yield %>
+    </div>
   </body>
 </html>

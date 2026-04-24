@@ -1,0 +1,67 @@
+<div style="max-width: 850px; margin: 40px auto; padding: 30px; background: white; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.05); display: flex; gap: 40px; flex-wrap: wrap;">
+  
+  <div style="flex: 0 0 250px;">
+    <% if @book.cover_image.attached? %>
+      <%= image_tag @book.cover_image, style: "width: 100%; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" %>
+    <% else %>
+      <div style="width: 100%; height: 350px; background-color: #f4f7f6; display: flex; align-items: center; justify-content: center; border-radius: 4px; border: 1px dashed #ccc; color: #888; font-style: italic;">
+        No Cover Available
+      </div>
+    <% end %>
+  </div>
+
+  <div style="flex: 1; min-width: 300px;">
+    <h2 style="margin-top: 0; font-size: 2.5rem; line-height: 1.1; margin-bottom: 10px; color: #111;"><%= @book.title %></h2>
+    <p style="font-size: 1.2rem; color: #555; margin-bottom: 20px;"><strong>By:</strong> <%= @book.author %></p>
+    
+    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+      <span style="background-color: #f4f7f6; padding: 6px 12px; border-radius: 4px; font-size: 0.9em; border: 1px solid #eaeaea;">
+        📁 <%= @book.category.name %>
+      </span>
+      <span style="background-color: #f4f7f6; padding: 6px 12px; border-radius: 4px; font-size: 0.9em; border: 1px solid #eaeaea;">
+        👤 <%= link_to @book.owner.name, user_path(@book.owner), style: "text-decoration: none; color: inherit;" %>
+      </span>
+    </div>
+
+    <p style="margin-bottom: 20px;">
+      <strong>Current Status:</strong> 
+      <% status_color = @book.status == 'available' ? '#28a745' : (@book.status == 'borrowed' ? '#dc3545' : '#fd7e14') %>
+      <span style="color: <%= status_color %>; font-weight: bold; padding: 4px 8px; background-color: <%= status_color %>15; border-radius: 4px;">
+        <%= @book.status.titleize %>
+      </span>
+    </p>
+
+    <div style="margin: 25px 0; padding: 20px; background-color: #fdfdfd; border-left: 4px solid #d94a38;">
+      <strong style="display: block; margin-bottom: 8px;">Description:</strong>
+      <span style="line-height: 1.6; color: #444;"><%= @book.description %></span>
+    </div>
+
+    <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #eaeaea;">
+      
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        
+        <% if logged_in? && current_user != @book.owner %>
+          <% if @book.status == 'available' %>
+            <%= link_to "Request to Borrow", new_borrow_request_path(book_id: @book.id), style: "padding: 12px 24px; background-color: #d94a38; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 1rem; letter-spacing: 0.5px;" %> 
+          <% else %>
+            <p style="color: #dc3545; font-weight: bold; padding: 12px; background-color: #f8d7da; border-radius: 4px; margin: 0;">This book is currently <%= @book.status %>.</p>
+          <% end %>
+        <% elsif !logged_in? %>
+          <p style="padding: 15px; background-color: #f4f7f6; border-radius: 4px; border: 1px solid #ddd; margin: 0; width: 100%;">
+            <em><%= link_to "Log in", login_path, style: "color: #d94a38; font-weight: bold; text-decoration: none;" %> to request this book.</em>
+          </p>
+        <% end %>
+
+        <% if current_user == @book.owner || (logged_in? && current_user.admin?) %>
+          <%= link_to "Edit Book", edit_book_path(@book), style: "padding: 12px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;" %>
+          <%= link_to "Remove Book", book_path(@book), method: :delete, data: { confirm: "Are you sure?" }, style: "padding: 12px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;" %>
+        <% end %>
+
+      </div>
+      
+      <div style="margin-top: 30px;">
+        <%= link_to "← Back to Catalog", books_path, style: "color: #888; text-decoration: none; font-size: 0.9em; transition: color 0.2s;" %>
+      </div>
+    </div>
+  </div>
+</div>

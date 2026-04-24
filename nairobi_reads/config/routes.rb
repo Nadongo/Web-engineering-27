@@ -1,3 +1,26 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # 1. Setting root (Top Page)
+  root 'pages#home'
+
+  # 2. Authentication Routing (Login/Logout)
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+  get '/my_bookshelf', to: 'users#bookshelf', as: 'my_bookshelf'
+  get '/admin', to: 'admin#dashboard', as: 'admin_dashboard'
+ 
+  # 4. RESTful Resources using 'only' to prevent extra routes
+  resources :users, only: [:new, :create, :show, :edit, :update]
+  
+  # Standard CRUD for books
+  resources :books
+
+  resources :categories, only: [:index, :show, :create, :destroy]
+  resources :borrow_requests, only: [:new, :create, :update] do
+    member do
+      get :return_book
+      patch :mark_returned
+    end
+  end
 end

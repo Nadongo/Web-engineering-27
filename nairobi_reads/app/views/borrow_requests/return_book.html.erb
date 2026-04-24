@@ -1,0 +1,25 @@
+<div style="max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+  <h2 style="border-bottom: 2px solid #111; padding-bottom: 10px;">Mark as Returned</h2>
+  <p style="color: #666; margin-bottom: 25px;">You are marking <strong><%= @request.book.title %></strong> as returned by <strong><%= @request.requester.name %></strong>.</p>
+
+  <%= form_with url: mark_returned_borrow_request_path(@request), method: :patch, local: true do |f| %>
+    
+    <div style="margin-bottom: 20px; background: #f8f9fa; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0;">
+      <h4 style="margin-top: 0; margin-bottom: 15px;">Rate the Borrower</h4>
+      
+      <div style="margin-bottom: 20px;">
+        <%= label_tag 'review[rating]', "Star Rating (1 = Poor, 5 = Perfect Condition)", style: "font-weight: bold; display: block; margin-bottom: 8px;" %>
+        <%= select_tag 'review[rating]', options_for_select([['5 Stars - Perfect', 5], ['4 Stars - Good', 4], ['3 Stars - Okay', 3], ['2 Stars - Late/Slight Damage', 2], ['1 Star - Very Late/Damaged', 1]]), style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" %>
+      </div>
+
+      <div style="margin-bottom: 10px;">
+        <%= label_tag 'review[comment]', "Public Feedback", style: "font-weight: bold; display: block; margin-bottom: 8px;" %>
+        <%= text_area_tag 'review[comment]', nil, rows: 4, placeholder: "e.g., Great borrower! Returned the book right on time and in perfect condition.", required: true, style: "width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit "Complete Transaction & Submit Review", style: "padding: 12px 24px; background-color: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.05rem;" %>
+    </div>
+  <% end %>
+</div>
