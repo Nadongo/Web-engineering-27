@@ -1,0 +1,154 @@
+<% tab = params[:tab] || 'summary' %>
+
+<div style="max-width: 1100px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; gap: 40px;">
+  
+  <div style="flex: 0 0 220px; border-right: 1px solid #eaeaea; padding-right: 20px;">
+    <h3 style="margin-top: 0; font-family: 'Helvetica Neue', sans-serif; color: #111; font-size: 1.2rem; margin-bottom: 20px;">Admin Panel</h3>
+
+    <div style="display: flex; flex-direction: column; gap: 5px; font-family: 'Helvetica Neue', sans-serif;">
+      <%= link_to "📊 Dashboard", admin_dashboard_path(tab: 'summary'), style: "display: block; padding: 12px 15px; text-decoration: none; border-radius: 4px; background-color: #{tab == 'summary' ? '#f8f9fa' : 'transparent'}; font-weight: #{tab == 'summary' ? 'bold' : 'normal'}; color: #333; border-left: 4px solid #{tab == 'summary' ? '#111' : 'transparent'};" %>
+      
+      <%= link_to "👥 Users", admin_dashboard_path(tab: 'users'), style: "display: block; padding: 12px 15px; text-decoration: none; border-radius: 4px; background-color: #{tab == 'users' ? '#f8f9fa' : 'transparent'}; font-weight: #{tab == 'users' ? 'bold' : 'normal'}; color: #333; border-left: 4px solid #{tab == 'users' ? '#111' : 'transparent'};" %>
+      
+      <%= link_to "📚 Books", admin_dashboard_path(tab: 'books'), style: "display: block; padding: 12px 15px; text-decoration: none; border-radius: 4px; background-color: #{tab == 'books' ? '#f8f9fa' : 'transparent'}; font-weight: #{tab == 'books' ? 'bold' : 'normal'}; color: #333; border-left: 4px solid #{tab == 'books' ? '#111' : 'transparent'};" %>
+      
+      <%= link_to "📁 Categories", admin_dashboard_path(tab: 'categories'), style: "display: block; padding: 12px 15px; text-decoration: none; border-radius: 4px; background-color: #{tab == 'categories' ? '#f8f9fa' : 'transparent'}; font-weight: #{tab == 'categories' ? 'bold' : 'normal'}; color: #333; border-left: 4px solid #{tab == 'categories' ? '#111' : 'transparent'};" %>
+      
+      <%= link_to "🔄 Borrow Requests", admin_dashboard_path(tab: 'requests'), style: "display: block; padding: 12px 15px; text-decoration: none; border-radius: 4px; background-color: #{tab == 'requests' ? '#fdf3f2' : 'transparent'}; font-weight: #{tab == 'requests' ? 'bold' : 'normal'}; color: #{tab == 'requests' ? '#d94a38' : '#333'}; border-left: 4px solid #{tab == 'requests' ? '#d94a38' : 'transparent'};" %>
+    </div>
+  </div>
+
+  <div style="flex: 1; overflow-x: auto;">
+    
+    <% if tab == 'summary' %>
+      <h2 style="margin-top: 0; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">Site Administration</h2>
+      <div style="display: flex; gap: 20px; margin-top: 25px;">
+        <div style="flex: 1; border: 1px solid #e2e8f0; padding: 25px; text-align: center; border-radius: 6px;">
+          <h4 style="margin-top: 0; color: #666; font-size: 0.85em; text-transform: uppercase;">Total Users</h4>
+          <p style="font-size: 2.5rem; font-weight: bold; margin: 10px 0 0 0;"><%= @total_users %></p>
+        </div>
+        <div style="flex: 1; border: 1px solid #e2e8f0; padding: 25px; text-align: center; border-radius: 6px;">
+          <h4 style="margin-top: 0; color: #666; font-size: 0.85em; text-transform: uppercase;">Total Books</h4>
+          <p style="font-size: 2.5rem; font-weight: bold; margin: 10px 0 0 0;"><%= @total_books %></p>
+        </div>
+        <div style="flex: 1; border: 1px solid #e2e8f0; padding: 25px; text-align: center; border-radius: 6px; border-top: 4px solid #d94a38;">
+          <h4 style="margin-top: 0; color: #666; font-size: 0.85em; text-transform: uppercase;">Active Requests</h4>
+          <p style="font-size: 2.5rem; font-weight: bold; margin: 10px 0 0 0; color: #d94a38;"><%= @active_requests %></p>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 40px; border-bottom: 2px solid #eaeaea; padding-bottom: 10px; color: #555; font-size: 1.1rem;">Recent Activities</h3>
+      <ul style="list-style-type: none; padding: 0; margin-top: 15px;">
+        <% @recent_requests.each do |req| %>
+          <li style="padding: 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.95rem;">
+            <span style="color: #888; font-size: 0.85em; margin-right: 10px;"><%= time_ago_in_words(req.created_at) %> ago</span>
+            <strong><%= req.requester.name %></strong> requested to borrow "<%= req.book.title %>"
+          </li>
+        <% end %>
+
+        <% @recent_books.each do |book| %>
+          <li style="padding: 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.95rem;">
+            <span style="color: #888; font-size: 0.85em; margin-right: 10px;"><%= time_ago_in_words(book.created_at) %> ago</span>
+            <strong><%= book.owner.name %></strong> added a new book: "<%= book.title %>"
+          </li>
+        <% end %>
+        
+        <% if @recent_requests.empty? && @recent_books.empty? %>
+          <li style="padding: 12px; color: #888; font-style: italic;">No recent activities found.</li>
+        <% end %>
+      </ul>
+
+    <% elsif tab == 'users' %>
+      <h2 style="margin-top: 0; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">All Users</h2>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <tr style="background: #f8f9fa; text-align: left;"><th style="padding: 10px; border: 1px solid #ddd;">Name</th><th style="padding: 10px; border: 1px solid #ddd;">Email</th><th style="padding: 10px; border: 1px solid #ddd;">Joined</th></tr>
+        <% @users.each do |user| %>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong><%= user.name %></strong> <%= "<span style='color:red;font-size:0.8em;'>(Admin)</span>".html_safe if user.admin? %></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= user.email %></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= user.created_at.strftime("%b %d, %Y") %></td>
+          </tr>
+        <% end %>
+      </table>
+
+      <div style="margin-top: 25px; display: flex; flex-direction: column; align-items: center; font-family: 'Helvetica Neue', sans-serif;">
+        <div style="margin-bottom: 15px; color: #666; font-size: 0.95rem; font-style: italic;">
+          <%= page_entries_info @users, entry_name: 'user' %>
+        </div>
+        <%= paginate @users %>
+      </div>
+
+    <% elsif tab == 'books' %>
+      <h2 style="margin-top: 0; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">All Books</h2>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95em;">
+        <tr style="background: #f8f9fa; text-align: left;"><th style="padding: 10px; border: 1px solid #ddd;">Title</th><th style="padding: 10px; border: 1px solid #ddd;">Owner</th><th style="padding: 10px; border: 1px solid #ddd;">Status</th><th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Action</th></tr>
+        <% @books.each do |book| %>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= link_to book.title, book_path(book), style: "color: #111; font-weight: bold;" %></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= book.owner.name %></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= book.status.upcase %></td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+              <%= link_to "Delete", book_path(book), method: :delete, data: { confirm: "Admin Override: Delete this book permanently?" }, style: "color: white; background: #dc3545; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.85em;" %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+
+      <div style="margin-top: 25px; display: flex; flex-direction: column; align-items: center; font-family: 'Helvetica Neue', sans-serif;">
+        <div style="margin-bottom: 15px; color: #666; font-size: 0.95rem; font-style: italic;">
+          <%= page_entries_info @books, entry_name: 'book' %>
+        </div>
+        <%= paginate @books %>
+      </div>
+
+    <% elsif tab == 'categories' %>
+      <h2 style="margin-top: 0; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">Manage Categories</h2>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #ddd; margin: 20px 0;">
+        <h4 style="margin-top: 0; margin-bottom: 10px;">Add New Category</h4>
+        <%= form_with(model: @new_category, local: true, style: "display: flex; gap: 10px;") do |f| %>
+          <%= f.text_field :name, placeholder: "e.g., Science Fiction", required: true, style: "padding: 8px; flex: 1; border: 1px solid #ccc; border-radius: 4px;" %>
+          <%= f.submit "Create", style: "padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;" %>
+        <% end %>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr style="background: #f8f9fa; text-align: left;"><th style="padding: 10px; border: 1px solid #ddd;">Category Name</th><th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Total Books</th><th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Action</th></tr>
+        <% @categories.each do |cat| %>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;"><%= cat.name %></td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;"><%= cat.books.count %></td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+              <% if cat.books.empty? %>
+                <%= link_to "Delete", category_path(cat), method: :delete, data: { confirm: "Delete this category?" }, style: "color: #dc3545; font-size: 0.9em;" %>
+              <% else %>
+                <span style="color: #999; font-size: 0.85em; font-style: italic;">Books attached</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+
+    <% elsif tab == 'requests' %>
+      <h2 style="margin-top: 0; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">Active Borrow Requests</h2>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95em;">
+        <tr style="background: #f8f9fa; text-align: left;"><th style="padding: 10px; border: 1px solid #ddd;">Book</th><th style="padding: 10px; border: 1px solid #ddd;">Owner</th><th style="padding: 10px; border: 1px solid #ddd;">Requester</th><th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Admin Action</th></tr>
+        <% @requests.each do |req| %>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong><%= req.book.title %></strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= req.book.owner.name %></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><%= req.requester.name %></td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center; display: flex; gap: 5px; justify-content: center;">
+              <%= button_to "Approve", borrow_request_path(req, status: 'approved'), method: :patch, style: "background: #28a745; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;" %>
+              <%= button_to "Reject", borrow_request_path(req, status: 'rejected'), method: :patch, style: "background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;" %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @requests.empty? %>
+          <tr><td colspan="4" style="padding: 20px; text-align: center; color: #888;">No active requests right now.</td></tr>
+        <% end %>
+      </table>
+    <% end %>
+
+  </div>
+</div>

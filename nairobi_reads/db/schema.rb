@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_04_21_124714) do
+ActiveRecord::Schema.define(version: 2026_04_24_064748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "books", force: :cascade do |t|
     t.string "title", null: false
@@ -28,10 +56,33 @@ ActiveRecord::Schema.define(version: 2026_04_21_124714) do
     t.index ["owner_id"], name: "index_books_on_owner_id"
   end
 
+  create_table "borrow_requests", force: :cascade do |t|
+    t.bigint "requester_id", null: false
+    t.bigint "book_id", null: false
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "proposed_datetime"
+    t.text "message"
+    t.index ["book_id"], name: "index_borrow_requests_on_book_id"
+    t.index ["requester_id"], name: "index_borrow_requests_on_requester_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "rating"
+    t.text "comment"
+    t.bigint "borrow_request_id", null: false
+    t.integer "reviewer_id"
+    t.integer "reviewee_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["borrow_request_id"], name: "index_reviews_on_borrow_request_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -45,6 +96,11 @@ ActiveRecord::Schema.define(version: 2026_04_21_124714) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "books", "categories"
   add_foreign_key "books", "users", column: "owner_id"
+  add_foreign_key "borrow_requests", "books"
+  add_foreign_key "borrow_requests", "users", column: "requester_id"
+  add_foreign_key "reviews", "borrow_requests"
 end

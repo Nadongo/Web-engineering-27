@@ -1,0 +1,49 @@
+<div style="max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+  <h2 style="border-bottom: 2px solid #111; padding-bottom: 10px;">Upload to Your Bookshelf</h2>
+
+  <%= form_with(model: @book, local: true) do |f| %>
+    <% if @book.errors.any? %>
+      <div style="color: #dc3545; margin-bottom: 20px; padding: 10px; background-color: #f8d7da; border-radius: 4px;">
+        <h4 style="margin-top: 0;">Please fix the following errors:</h4>
+        <ul style="margin-bottom: 0;">
+          <% @book.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :cover_image, "Book Cover Image", style: "font-weight: bold; display: block; margin-bottom: 5px;" %>
+      <%= f.file_field :cover_image, accept: 'image/png,image/gif,image/jpeg', style: "width: 100%;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :title, style: "font-weight: bold; display: block; margin-bottom: 5px;" %>
+      <%= f.text_field :title, required: true, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :author, style: "font-weight: bold; display: block; margin-bottom: 5px;" %>
+      <%= f.text_field :author, required: true, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :category_id, "Category", style: "font-weight: bold; display: block; margin-bottom: 5px;" %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, { prompt: "Select a Category" }, { style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" } %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :description, style: "font-weight: bold; display: block; margin-bottom: 5px;" %>
+      <%= f.text_area :description, rows: 5, required: true, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" %>
+    </div>
+
+    <div>
+      <%= f.submit "Upload Book", class: "btn-editorial" %>
+    </div>
+  <% end %>
+
+  <div style="margin-top: 20px;">
+    <%= link_to "← Cancel and Return to Catalog", books_path, style: "color: #666; text-decoration: none;" %>
+  </div>
+</div>

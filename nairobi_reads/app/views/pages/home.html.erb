@@ -1,0 +1,44 @@
+<div class="editorial-grid" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; max-width: 1100px; margin: 0 auto; padding: 20px;">
+  
+  <div class="main-column" style="flex: 1; min-width: 300px;">
+    
+    <h1 class="headline" style="font-size: clamp(2.2rem, 8vw, 3.5rem); margin-bottom: 10px; line-height: 1.1;">
+      Your neighborhood's<br>
+      <span style="color: #d94a38;">free library.</span>
+    </h1>
+
+    <p class="sub-headline" style="font-size: 1.25rem; color: #555; margin-bottom: 30px; font-family: 'Helvetica Neue', sans-serif;">
+      Join Nairobi's premier trust-based book exchange. Borrow books, share your collection, and build community.
+    </p>
+
+    <div style="display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;">
+      <%= link_to "Create Account", new_user_path, style: "padding: 12px 24px; background-color: #d94a38; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 1rem; letter-spacing: 0.5px; text-align: center;" %>
+      <%= link_to "Log In", login_path, style: "padding: 12px 24px; background-color: transparent; color: #333; text-decoration: none; border: 2px solid #333; border-radius: 4px; font-weight: bold; font-size: 1rem; text-align: center;" %>
+    </div>
+
+    <div style="padding-top: 25px; border-top: 2px solid #eaeaea;">
+      <h3 style="font-size: 1.2rem; margin-bottom: 20px; font-family: 'Helvetica Neue', sans-serif;">How It Works</h3>
+      
+      <div style="display: flex; gap: 15px; font-family: 'Helvetica Neue', sans-serif; flex-wrap: wrap;">
+        <div style="flex: 1 1 100px; background: white; padding: 20px 15px; border: 1px solid #ddd; border-radius: 6px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+          <strong style="display: block; margin-bottom: 5px;">1. SHARE</strong>
+          <span style="font-size: 0.9em; color: #666;">List your Books</span>
+        </div>
+        <div style="flex: 1 1 100px; background: white; padding: 20px 15px; border: 1px solid #ddd; border-radius: 6px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+          <strong style="display: block; margin-bottom: 5px;">2. BORROW</strong>
+          <span style="font-size: 0.9em; color: #666;">Find Nearest Book</span>
+        </div>
+        <div style="flex: 1 1 100px; background: white; padding: 20px 15px; border: 1px solid #ddd; border-radius: 6px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+          <strong style="display: block; margin-bottom: 5px;">3. RETURN</strong>
+          <span style="font-size: 0.9em; color: #666;">Meet & Return</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="side-column" style="flex: 1; min-width: 300px; padding: 0; background: transparent; border: none; box-shadow: none;">
+    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80" alt="Books and community" style="width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+  </div>
+
+</div>
