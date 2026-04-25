@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
 
+  post '/guest_login', to: 'sessions#guest_login'
+  post '/admin_guest_login', to: 'sessions#admin_guest_login'
+
   get '/my_bookshelf', to: 'users#bookshelf', as: 'my_bookshelf'
   get '/admin', to: 'admin#dashboard', as: 'admin_dashboard'
  

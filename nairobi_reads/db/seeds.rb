@@ -101,3 +101,19 @@ Book.create!(
 )
 
 puts "Seed generation complete! 5 Users, 5 Categories, and 5 Books created."
+
+# Guest General User
+User.find_or_create_by!(email: 'guest@example.com') do |user|
+  user.name = "Guest User"
+  user.password = "SecurePassword123!"
+  user.password_confirmation = "SecurePassword123!"
+  user.admin = false 
+end
+
+# Guest Admin User
+User.find_or_create_by!(email: 'admin_guest@example.com') do |user|
+  user.name = "Admin Guest"
+  user.password = "SecurePassword123!"
+  user.password_confirmation = "SecurePassword123!"
+  user.admin = true
+end

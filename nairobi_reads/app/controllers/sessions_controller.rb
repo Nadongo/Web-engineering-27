@@ -21,24 +21,34 @@ class SessionsController < ApplicationController
   end
 
   def guest_login
-    guest_user = User.find_or_create_by!(email: 'guest@nairobireads.co.ke') do |user|
-      user.password = SecureRandom.urlsafe_base64
-      user.name = "Guest User"
-      user.role = :general
-      user.preferred_meeting_spot = "Any Public Library"
-    end
+    # 1. Wipe out any old, broken guest data
+    User.where(email: 'guest@nairobireads.co.ke').destroy_all
+
+    # 2. Build a fresh, guaranteed-to-work user
+    guest_user = User.create!(
+      email: 'guest@nairobireads.co.ke',
+      password: 'SecurePassword123!',
+      password_confirmation: 'SecurePassword123!',
+      name: 'Guest User',
+      role: :general,
+      preferred_meeting_spot: 'Any Public Library'
+    )
+    
     session[:user_id] = guest_user.id
     flash[:success] = "Logged in as a Guest User."
     redirect_to books_path
   end
-
-  def guest_admin_login
+  
+  def admin_guest_login
     guest_admin = User.find_or_create_by!(email: 'admin_guest@nairobireads.co.ke') do |user|
-      user.password = SecureRandom.urlsafe_base64
+      random_password = SecureRandom.urlsafe_base64
+      user.password = random_password
+      user.password_confirmation = random_password
       user.name = "Guest Admin"
       user.role = :admin
       user.preferred_meeting_spot = "Admin Office"
     end
+    
     session[:user_id] = guest_admin.id
     flash[:success] = "Logged in as a Guest Administrator."
     redirect_to books_path

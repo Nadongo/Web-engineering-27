@@ -17,4 +17,13 @@
     </div>
   <% end %>
 
+  <hr class="my-4">
+  <div class="d-grid gap-2 text-center">
+    <p class="text-muted mb-2">Or log in instantly for testing:</p>
+    
+    <%= button_to 'Guest User Login', guest_login_path, method: :post, class: "btn btn-outline-secondary w-100" %>
+    
+    <%= button_to 'Admin Guest Login', admin_guest_login_path, method: :post, class: "btn btn-outline-dark w-100 mt-2" %>
+  </div>
+
 </div>
