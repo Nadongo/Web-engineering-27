@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get '/admin', to: 'admin#dashboard', as: 'admin_dashboard'
  
   # 4. RESTful Resources using 'only' to prevent extra routes
-  resources :users, only: [:new, :create, :show, :edit, :update]
+  resources :users
   
   # Standard CRUD for books
   resources :books

@@ -102,18 +102,23 @@ Book.create!(
 
 puts "Seed generation complete! 5 Users, 5 Categories, and 5 Books created."
 
+puts "Creating Guest Accounts..."
 # Guest General User
-User.find_or_create_by!(email: 'guest@example.com') do |user|
+User.find_or_create_by!(email: 'guest@nairobireads.co.ke') do |user|
   user.name = "Guest User"
   user.password = "SecurePassword123!"
   user.password_confirmation = "SecurePassword123!"
-  user.admin = false 
+  user.role = :general
+  user.preferred_meeting_spot = "Any Public Library"
 end
 
 # Guest Admin User
-User.find_or_create_by!(email: 'admin_guest@example.com') do |user|
+User.find_or_create_by!(email: 'admin_guest@nairobireads.co.ke') do |user|
   user.name = "Admin Guest"
   user.password = "SecurePassword123!"
   user.password_confirmation = "SecurePassword123!"
-  user.admin = true
+  user.role = :admin
+  user.preferred_meeting_spot = "Admin Office"
 end
+
+puts "Guest Accounts verified!"

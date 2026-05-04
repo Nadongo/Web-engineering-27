@@ -61,12 +61,25 @@
     <% elsif tab == 'users' %>
       <h2 style="margin-top: 0; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">All Users</h2>
       <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-        <tr style="background: #f8f9fa; text-align: left;"><th style="padding: 10px; border: 1px solid #ddd;">Name</th><th style="padding: 10px; border: 1px solid #ddd;">Email</th><th style="padding: 10px; border: 1px solid #ddd;">Joined</th></tr>
+        <tr style="background: #f8f9fa; text-align: left;">
+          <th style="padding: 10px; border: 1px solid #ddd;">Name</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Email</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Joined</th>
+          <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Actions</th>
+        </tr>
         <% @users.each do |user| %>
           <tr>
             <td style="padding: 10px; border: 1px solid #ddd;"><strong><%= user.name %></strong> <%= "<span style='color:red;font-size:0.8em;'>(Admin)</span>".html_safe if user.admin? %></td>
             <td style="padding: 10px; border: 1px solid #ddd;"><%= user.email %></td>
             <td style="padding: 10px; border: 1px solid #ddd;"><%= user.created_at.strftime("%b %d, %Y") %></td>
+            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+              <div style="display: flex; gap: 5px; justify-content: center;">
+                <%= link_to "Edit", edit_user_path(user), style: "color: white; background: #007bff; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.85em;" %>
+                <% unless current_user == user %>
+                  <%= link_to "Delete", user_path(user), method: :delete, data: { confirm: "Are you sure you want to completely delete this user?" }, style: "color: white; background: #dc3545; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.85em;" %>
+                <% end %>
+              </div>
+            </td>
           </tr>
         <% end %>
       </table>
