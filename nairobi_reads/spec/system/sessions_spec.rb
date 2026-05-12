@@ -21,7 +21,7 @@ RSpec.describe "Sessions", type: :system do
       # Test Logout
       click_button "Log Out"
       expect(page).to have_content("Log In")
-    end
+    end 
 
     it "prevents login with invalid credentials" do
       visit login_path

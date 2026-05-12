@@ -51,6 +51,38 @@ RSpec.describe "Books", type: :system do
       expect(current_path).to eq(root_path).or eq(books_path)
     end
 
+    describe "Custom Validations" do
+      it "is invalid if the owner has more than 5 books (owner_book_limit)" do
+        # We only create 4 here because 'target_book' already exists for this user! (4 + 1 = 5)
+        4.times do |i|
+          Book.create!(title: "Book #{i}", author: "Author", description: "Desc", owner: owner_user, category: category)
+        end
+        
+        # Attempt to create the 6th book
+        book6 = Book.new(title: "6th Book", author: "Author", description: "Desc", owner: owner_user, category: category)
+        
+        expect(book6).not_to be_valid
+        expect(book6.errors.messages.values.flatten).to include(/limit|maximum|5/i) 
+      end
+    end
+
+    describe "Book Update" do
+      it "allows an owner to edit their book (Update)" do
+        visit login_path
+        fill_in "Email", with: owner_user.email
+        fill_in "Password", with: "password123"
+        click_button "Log In"
+
+        visit edit_book_path(target_book)
+        fill_in "Title", with: "Updated Book Title"
+        
+        # FIXED: Bulletproof submit clicker to avoid Capybara element not found errors
+        all('input[type="submit"]').last.click 
+
+        expect(page).to have_content("Updated Book Title")
+      end
+    end
+
     it "allows an admin to delete any book (Access Restriction)" do
       # Login as Admin
       visit login_path

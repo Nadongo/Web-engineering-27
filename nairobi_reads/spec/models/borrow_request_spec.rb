@@ -12,6 +12,19 @@ RSpec.describe BorrowRequest, type: :model do
       request = BorrowRequest.new(book: book, requester: requester, status: "pending")
       expect(request).to be_valid
     end
+    describe "Association Validations" do
+    it "is invalid without a requester (Negative Test)" do
+      request = BorrowRequest.new(book: book, requester: nil, status: "pending")
+      expect(request).not_to be_valid
+      expect(request.errors[:requester]).to include("must exist")
+    end
+
+    it "is invalid without a book (Negative Test)" do
+      request = BorrowRequest.new(book: nil, requester: requester, status: "pending")
+      expect(request).not_to be_valid
+      expect(request.errors[:book]).to include("must exist")
+    end
+  end
 
     it "is invalid with an unknown status (Negative Test)" do
       request = BorrowRequest.new(book: book, requester: requester, status: "lost_in_transit")

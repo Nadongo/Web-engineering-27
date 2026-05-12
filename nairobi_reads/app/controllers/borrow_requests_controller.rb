@@ -72,6 +72,21 @@ class BorrowRequestsController < ApplicationController
     @review = Review.new
   end
 
+  def destroy
+    @borrow_request = BorrowRequest.find(params[:id])
+    
+    # Security check: Make sure only the person who made the request can cancel it
+    if current_user == @borrow_request.requester
+      @borrow_request.destroy
+      flash[:success] = "Borrow request canceled successfully."
+    else
+      flash[:danger] = "You are not authorized to cancel this request."
+    end
+    
+    # Redirect them right back to their bookshelf
+    redirect_back(fallback_location: root_path)
+  end
+
   def mark_returned
     @request = BorrowRequest.find(params[:id])
     

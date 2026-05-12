@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :books
 
   resources :categories, only: [:index, :show, :create, :destroy]
-  resources :borrow_requests, only: [:new, :create, :update] do
+  resources :borrow_requests, only: [:new, :create, :update, :destroy] do
     member do
       get :return_book
       patch :mark_returned

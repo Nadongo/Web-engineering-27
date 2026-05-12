@@ -50,4 +50,32 @@ RSpec.describe "BorrowRequests", type: :system do
       expect(book.status).to eq("borrowed")
     end
   end
+
+  describe "BorrowRequest Update and Delete" do
+    let!(:pending_request) { BorrowRequest.create!(book: book, requester: requester, status: "pending") }
+
+    it "allows the owner to update the status of a request (Update)" do
+      visit login_path
+      fill_in "Email", with: owner.email
+      fill_in "Password", with: "password123"
+      click_button "Log In"
+
+      # Bypasses the UI and submits the approval directly to the controller
+      page.driver.submit :patch, borrow_request_path(pending_request), { status: 'approved' }
+
+      expect(pending_request.reload.status).to eq("approved")
+    end
+
+    it "allows a user to cancel/delete their request (Delete)" do
+      visit login_path
+      fill_in "Email", with: requester.email
+      fill_in "Password", with: "password123"
+      click_button "Log In"
+
+      # Bypasses the Javascript confirmation pop-up completely
+      page.driver.submit :delete, borrow_request_path(pending_request), {}
+      
+      expect(BorrowRequest.exists?(pending_request.id)).to be_falsey
+    end
+  end
 end
